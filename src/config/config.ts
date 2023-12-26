@@ -10,6 +10,7 @@ export const config = {
   logger: {
     level: process.env.LOGGER_LEVEL ? Number(process.env.LOGGER_LEVEL) : 6, // 0: log, 1: trace, 2: debug, 3: info, 4: warn, 5: fatal, 6: error
   },
+  direct_service: process.env.DIRECT_SERVICE === "true",
   mysql: {
     connectionLimit: process.env.MYSQL_CONNECTION_LIMIT
       ? Number(process.env.MYSQL_CONNECTION_LIMIT)
@@ -54,4 +55,5 @@ export const config = {
     secret_key: process.env.AMZ_S3_SECRET_KEY,
     region: process.env.AMZ_S3_REGION,
   },
+  wsPort: process.env.WEB_SOCKET_PORT ? Number(process.env.WEB_SOCKET_PORT) : 3000,
 };

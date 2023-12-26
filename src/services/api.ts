@@ -3,13 +3,15 @@ import * as https from 'https';
 import express, {Application} from "express"
 
 import {applyMiddleware} from "../middlewares"
-import {AuthRoute, UserRoute} from "../routes"
+import {AuthRoute, ChatRoute, GroupRoute, UserRoute} from "../routes"
 import {config} from "../config"
 import {logger} from "../utils";
 // --- Setup router
 const setupRouter = (app: Application) => {
     AuthRoute(app)
     UserRoute(app)
+    GroupRoute(app)
+    ChatRoute(app)
 };
 
 const startServe = async () => {

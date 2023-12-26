@@ -1,6 +1,6 @@
 'use strict'
 
-import {ApiService} from "./services";
+import {ApiService, WsService} from "./services";
 import {logger, Utils} from "./utils";
 import * as Util from "util";
 
@@ -10,6 +10,7 @@ const main = async () => {
   switch (runService) {
     default:
       await ApiService.startServe();
+      await WsService.startServe();
       break;
   }
 }

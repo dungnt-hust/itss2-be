@@ -106,4 +106,9 @@ export const doQuery = {
         }
         return is_success;
     },
+
+    getOne: async (query: string, params: any[]) => {
+        const [result, ignored]: any[] = await sql.query(query, params);
+        return result.length ? result[0] : null;
+    },
 };

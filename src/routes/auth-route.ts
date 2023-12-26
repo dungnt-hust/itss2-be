@@ -5,6 +5,7 @@ import {LoginHistoryController} from "../controllers";
 import geoip from 'geoip-lite'
 import {UAParser} from 'ua-parser-js'
 import {AuthController} from "../controllers/auth.controller";
+import {UserModel} from "../models";
 
 
 const login = async (req: Request, res: Response) => {
@@ -61,9 +62,10 @@ const getVerifyEmailCode = async (req: Request, res: Response) => {
 const register = async (req: Request, res: Response) => {
     const { email, password, code } = await Joi.object()
         .keys({
-            email: Joi.string().email().required(),
+            email: Joi.string().required(),
             password: Joi.string().custom(Utils.passwordMethod).required(),
-            code: Joi.string().required(),
+            age: Joi.number().required(),
+            gender: Joi.number().required()
         })
         .and('email', 'password')
         .validateAsync(req.body)
@@ -73,8 +75,9 @@ const register = async (req: Request, res: Response) => {
         password,
         code
     })
+  //
 
-    return routeResSuccess(res, { email, id: newUserId })
+    return routeResSuccess(res, await UserModel.get(newUserId))
 }
 
 

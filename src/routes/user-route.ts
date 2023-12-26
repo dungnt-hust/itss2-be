@@ -9,16 +9,12 @@ import {AuthController} from "../controllers/auth.controller";
 
 const get = async (req: Request, res: Response) => {
     const data = await Joi.object()
-        .keys({})
+        .keys({
+            user_id: Joi.number().required()
+        })
         .validateAsync(req.query)
 
-    return routeResSuccess(res, await UserController.get(res.locals.userId));
-}
-
-const hello = async (req: Request, res: Response) => {
-    return res.status(200).json({
-        message: "ok bay by"
-    })
+    return routeResSuccess(res, await UserController.get(data.user_id));
 }
 
 const list = async (req: Request, res: Response) => {
@@ -34,15 +30,29 @@ const list = async (req: Request, res: Response) => {
 
 const userLike = async (req: Request, res: Response) => {
     const data: any = await Joi.object().keys({
+        type: Joi.number().required(),
         limit: Joi.number().integer(),
         offset: Joi.number().integer(),
         order_by: Joi.string().default('id'),
         reverse: Joi.boolean(),
     }).validateAsync(req.query)
 
-    data.user_id = res.locals.userId || 3
+    data.user_id = res.locals.userId
 
     return routeResSuccess(res, await UserController.userLike(data))
+}
+
+const listLike = async (req: Request, res: Response) => {
+    const data: any = await Joi.object().keys({
+        limit: Joi.number().integer(),
+        offset: Joi.number().integer(),
+        order_by: Joi.string().default('id'),
+        reverse: Joi.boolean(),
+    }).validateAsync(req.query)
+
+    data.user_id = res.locals.userId
+
+    return routeResSuccess(res, await UserController.listLike(data))
 }
 
 const like = async (req: Request, res: Response) => {
@@ -84,14 +94,40 @@ const search = async (req: Request, res: Response) => {
 
 }
 
+const update = async (req: Request, res: Response) => {
+    const data = await Joi.object().keys({
+        mobile: Joi.number().integer().allow(null, ''),
+        gender: Joi.number().allow(null, ''),
+        fullname: Joi.string().allow(null, ''),
+        avatar: Joi.string().allow(null, ''),
+        description: Joi.string().allow(null, ''),
+        height: Joi.number().allow(null, ''),
+        weight: Joi.number().allow(null, ''),
+        job: Joi.string().allow(null, ''),
+        age: Joi.number().allow(null, ''),
+        city: Joi.string().allow(null, ''),
+        marital_status: Joi.number().allow(null, ''),
+        description_desire: Joi.string().allow(null, ''),
+        description_info: Joi.string().allow(null, ''),
+        hobby: Joi.string().allow(null, ''),
+        language: Joi.string().allow(null, ''),
+        academy_level: Joi.string().allow(null, ''),
+    }).validateAsync(req.body)
+
+    data.user_id = res.locals.userId
+
+    return routeResSuccess(res, await UserController.update(data, res.locals.userId))
+}
 export const UserRoute = (app: Application) => {
     const router = Router();
     app.use("/user", router);
 
-    router.get("/get", checkAuth, hpr(get));
+    router.get("/get", hpr(get));
     router.get("/list", hpr(list))
-    router.get("/list-like", hpr(userLike))
-    router.post("/like", hpr(like))
+    router.get("/list-like", checkAuth, hpr(userLike))
+    router.post("/like", checkAuth, hpr(like))
     router.get("/trending", hpr(trending));
     router.post("/search", hpr(search));
+    router.get("/list-like-user", checkAuth, hpr(listLike));
+    router.post("/update", checkAuth,  hpr(update));
 }

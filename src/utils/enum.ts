@@ -49,9 +49,12 @@ export enum ErrorCode {
     // collection
     COLLECTION_INVALID = 4001,
     USER_NOT_ACTIVE,
-
-
-
+    GROUP_NOT_EXISTS ,
+    PARSE_MESSAGE_ERROR,
+    CHANNEL_NOT_EXISTS,
+    USER_NOT_IN_GROUP,
+    CHAT_NOT_FOUND,
+    NOT_OWNER,
 }
 
 export enum HttpStatus {
@@ -173,5 +176,16 @@ export enum InventoryStatus {
 export enum LikeStatus {
     LIKE = 1,
     UNLIKE = 2,
+}
+
+export enum GroupType {
+    GROUP = 1,
+    DIRECT = 2,
+}
+
+export enum ChatStatus {
+    CREATED = 1,
+    DELETED = 2,
+    EDITED
 }
 

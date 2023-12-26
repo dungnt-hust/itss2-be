@@ -27,8 +27,10 @@ export class AuthController {
 
         const userInfo = {
             email: data.email,
-            name: data.email.split('@')[0],
+            fullname: data.email.split('@')[0],
             password: data.password,
+            age: data.age,
+            gender: data.gender
         }
         return UserModel.create(userInfo);
     };
